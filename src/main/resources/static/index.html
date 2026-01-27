@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avandeus - Employee Portal Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <img src="logo.png" alt="Avandeus" class="navbar-logo" height="300px" width="200px">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#dashboard" class="nav-tab active" onclick="switchTab('dashboard')">Dashboard</a></li>
+                <li><a href="#attendance" class="nav-tab" onclick="switchTab('attendance')">View Attendance</a></li>
+                <li><a href="#register" class="nav-tab" onclick="switchTab('register')">Register</a></li>
+                <li><a href="#stats" class="nav-tab" onclick="switchTab('stats')">Statistics</a></li>
+                <li><a href="2index.html" class="nav-tab">Alternative View</a></li>
+                <li><a href="attendance.html" class="nav-tab">Attendance Page</a></li>
+                <li><a href="login.html" class="nav-tab" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="tab-content active">
+            <div class="hero">
+                <h2>Welcome to Avandeus</h2>
+                <p>Professional Employee Management & Attendance Tracking System</p>
+            </div>
+
+            <section class="features">
+                <div class="feature-card" onclick="switchTab('attendance')">
+                    <h3>📋 Attendance Tracking</h3>
+                    <p>View all check-in records and attendance history</p>
+                    <button class="btn">View Records</button>
+                </div>
+                <div class="feature-card" onclick="switchTab('register')">
+                    <h3>📝 Register Attendance</h3>
+                    <p>Add new employee attendance records quickly</p>
+                    <button class="btn">Register Now</button>
+                </div>
+                <div class="feature-card" onclick="switchTab('stats')">
+                    <h3>📊 Statistics</h3>
+                    <p>View attendance statistics and reports</p>
+                    <button class="btn">View Stats</button>
+                </div>
+            </section>
+
+            <div class="quick-stats">
+                <div class="stat-box">
+                    <h4>Total Employees</h4>
+                    <p id="totalEmployees">0</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Today's Check-ins</h4>
+                    <p id="todayCheckIns">0</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Attendance Rate</h4>
+                    <p id="attendanceRate">0%</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Attendance View Section -->
+        <section id="attendance" class="tab-content">
+            <div class="section-header">
+                <h2>📋 Attendance Records</h2>
+                <button class="btn btn-primary" onclick="switchTab('register')">+ Add New Record</button>
+            </div>
+            
+            <div class="filter-bar">
+                <input type="text" id="filterInput" placeholder="Filter by Employee ID or Name..." onkeyup="filterAttendance()">
+                <button class="btn" onclick="loadAttendances()">🔄 Refresh</button>
+            </div>
+
+            <div id="attendance-list" class="attendance-list">
+                <p class="loading">Loading attendance records...</p>
+            </div>
+        </section>
+
+        <!-- Registration Section -->
+        <section id="register" class="tab-content">
+            <div class="registration-section">
+                <h2>📝 Register Employee Attendance</h2>
+                <form id="registrationForm" class="form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="empId">Employee ID:</label>
+                            <input type="text" id="empId" name="empId" placeholder="e.g., EMP001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="empName">Employee Name:</label>
+                            <input type="text" id="empName" name="empName" placeholder="e.g., John Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="checkInTime">Check-in Time:</label>
+                        <input type="datetime-local" id="checkInTime" name="checkInTime" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">✓ Register Attendance</button>
+                        <button type="reset" class="btn btn-secondary">Clear Form</button>
+                    </div>
+                </form>
+
+                <div id="message" class="message"></div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="stats" class="tab-content">
+            <h2>📊 Attendance Statistics</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Attendance Records</h3>
+                    <p class="stat-number" id="totalRecords">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Unique Employees</h3>
+                    <p class="stat-number" id="uniqueEmployees">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Check-ins per Employee</h3>
+                    <p class="stat-number" id="avgCheckIns">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Latest Record</h3>
+                    <p class="stat-info" id="latestRecord">No records yet</p>
+                </div>
+            </div>
+
+            <div class="detailed-stats">
+                <h3>Employee Attendance Summary</h3>
+                <table id="statsTable" class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Employee Name</th>
+                            <th>Check-in Count</th>
+                            <th>Last Check-in</th>
+                        </tr>
+                    </thead>
+                    <tbody id="statsBody">
+                        <tr><td colspan="4" class="text-center">Loading statistics...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Avandeus Corporation. All rights reserved.</p>
+            <p>Professional Employee Management Solutions</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Navigation
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Update navbar
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Load data based on tab
+            if (tabName === 'attendance') {
+                loadAttendances();
+            } else if (tabName === 'stats') {
+                loadStatistics();
+            } else if (tabName === 'dashboard') {
+                loadDashboardStats();
+            }
+        }
+
+        // Load Attendance Records
+        function loadAttendances() {
+            fetch('/attendances')
+                .then(response => response.json())
+                .then(data => {
+                    const attendanceList = document.getElementById('attendance-list');
+                    if (data.length === 0) {
+                        attendanceList.innerHTML = '<div class="empty-state"><p>No attendance records found. <a href="#register" onclick="switchTab(\'register\')">Register one now</a></p></div>';
+                        return;
+                    }
+                    attendanceList.innerHTML = data.map(record => `
+                        <div class="attendance-card">
+                            <div class="card-header">
+                                <h4>${record.empName}</h4>
+                                <span class="emp-id">ID: ${record.empId}</span>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Check-in Time:</strong> <span class="time-value">${new Date(record.checkInTime).toLocaleString()}</span></p>
+                            </div>
+                        </div>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('attendance-list').innerHTML = '<p class="error">Error loading records</p>';
+                });
+        }
+
+        // Filter Attendance
+        function filterAttendance() {
+            const filterValue = document.getElementById('filterInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.attendance-card');
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(filterValue) ? 'block' : 'none';
+            });
+        }
+
+        // Load Dashboard Statistics
+        function loadDashboardStats() {
+            fetch('/attendances')
+                .then(response => response.json())
+                .then(data => {
+                    const uniqueEmps = new Set(data.map(r => r.empId)).size;
+                    const today = new Date().toDateString();
+                    const todayCheckins = data.filter(r => new Date(r.checkInTime).toDateString() === today).length;
+                    
+                    document.getElementById('totalEmployees').textContent = uniqueEmps;
+                    document.getElementById('todayCheckIns').textContent = todayCheckins;
+                    document.getElementById('attendanceRate').textContent = uniqueEmps > 0 ? Math.round((todayCheckins / uniqueEmps) * 100) + '%' : '0%';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Load Detailed Statistics
+        function loadStatistics() {
+            fetch('/attendances')
+                .then(response => response.json())
+                .then(data => {
+                    const uniqueEmps = new Set(data.map(r => r.empId)).size;
+                    const empMap = {};
+                    
+                    data.forEach(record => {
+                        if (!empMap[record.empId]) {
+                            empMap[record.empId] = { name: record.empName, count: 0, latest: record.checkInTime };
+                        }
+                        empMap[record.empId].count++;
+                        if (new Date(record.checkInTime) > new Date(empMap[record.empId].latest)) {
+                            empMap[record.empId].latest = record.checkInTime;
+                        }
+                    });
+
+                    document.getElementById('totalRecords').textContent = data.length;
+                    document.getElementById('uniqueEmployees').textContent = uniqueEmps;
+                    document.getElementById('avgCheckIns').textContent = uniqueEmps > 0 ? (data.length / uniqueEmps).toFixed(1) : '0';
+                    document.getElementById('latestRecord').textContent = data.length > 0 ? new Date(data[data.length - 1].checkInTime).toLocaleString() : 'No records';
+
+                    // Populate table
+                    const tbody = document.getElementById('statsBody');
+                    tbody.innerHTML = Object.entries(empMap).map(([empId, emp]) => `
+                        <tr>
+                            <td>${empId}</td>
+                            <td>${emp.name}</td>
+                            <td><span class="badge">${emp.count}</span></td>
+                            <td>${new Date(emp.latest).toLocaleString()}</td>
+                        </tr>
+                    `).join('');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('statsBody').innerHTML = '<tr><td colspan="4" class="error">Error loading statistics</td></tr>';
+                });
+        }
+
+        // Registration Form Submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const attendance = {
+                empId: document.getElementById('empId').value.trim(),
+                empName: document.getElementById('empName').value.trim(),
+                checkInTime: document.getElementById('checkInTime').value
+            };
+
+            if (!attendance.empId || !attendance.empName || !attendance.checkInTime) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            fetch('/attendances', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(attendance)
+            })
+            .then(response => response.json())
+            .then(data => {
+                showMessage(`✓ Success! Attendance recorded for ${data.empName}`, 'success');
+                document.getElementById('registrationForm').reset();
+                setTimeout(() => {
+                    switchTab('attendance');
+                    loadAttendances();
+                }, 1500);
+            })
+            .catch(error => {
+                showMessage(`✗ Error: ${error.message}`, 'error');
+            });
+        });
+
+        // Show Message
+        function showMessage(msg, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = msg;
+            messageDiv.style.display = 'block';
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            loadDashboardStats();
+            document.getElementById('checkInTime').valueAsDate = new Date();
+        });
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

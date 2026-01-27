@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avandeus - Employee Registration</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .registration-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .registration-wrapper {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .reg-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .reg-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .reg-header p {
+            margin: 0.5rem 0 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .reg-content {
+            padding: 2.5rem;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #999;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .form-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-register {
+            padding: 0.9rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-register:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            padding: 0.9rem;
+            background: #f5f5f5;
+            color: #333;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reset:hover {
+            background: #e8e8e8;
+            border-color: #999;
+        }
+
+        .message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .login-link p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .login-link a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .reg-content {
+                padding: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .registration-wrapper {
+                margin: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .reg-header {
+                padding: 1.5rem;
+            }
+
+            .reg-header h1 {
+                font-size: 1.4rem;
+            }
+
+            .reg-content {
+                padding: 1.25rem;
+            }
+
+            .form-section-title {
+                font-size: 0.85rem;
+            }
+
+            .form-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <img src="logo.png" alt="Avandeus" class="navbar-logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-tab">Dashboard</a></li>
+                <li><a href="attendance.html" class="nav-tab">Attendance</a></li>
+                <li><a href="registration.html" class="nav-tab active">Register</a></li>
+                <li><a href="login.html" class="nav-tab" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="registration-container">
+        <div class="registration-wrapper">
+            <div class="reg-header">
+                <h1>Employee Registration</h1>
+                <p>Create your account to access the Avandeus portal</p>
+            </div>
+
+            <div class="reg-content">
+                <form id="registrationForm">
+                    <!-- Personal Information Section -->
+                    <div class="form-section">
+                        <div class="form-section-title">Personal Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="empName" class="required-field">Full Name</label>
+                                <input type="text" id="empName" name="empName" placeholder="Enter your full name" required>
+                            </div>
+                        </div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="empEmail" class="required-field">Company Email Address</label>
+                                <input type="email" id="empEmail" name="empEmail" placeholder="your.email@avandeus.com" required>
+                                <small style="color: #999; margin-top: 0.3rem; font-size: 0.85rem;">Must be a valid @avandeus.com email address</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employment Information Section -->
+                    <div class="form-section">
+                        <div class="form-section-title">Employment Information</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="empId" class="required-field">Employee ID</label>
+                                <input type="text" id="empId" name="empId" placeholder="Enter your employee ID" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="department">Department</label>
+                                <select id="department" name="department">
+                                    <option value="">Select Department</option>
+                                    <option value="Engineering">Engineering</option>
+                                    <option value="Sales">Sales</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="HR">Human Resources</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Operations">Operations</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="designation">Designation</label>
+                                <input type="text" id="designation" name="designation" placeholder="Your job title">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Check-in Information Section -->
+                    <div class="form-section">
+                        <div class="form-section-title">Attendance Check-in</div>
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label for="checkInTime" class="required-field">Check-in Date & Time</label>
+                                <input type="datetime-local" id="checkInTime" name="checkInTime" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-register">🔐 Register Account</button>
+                        <button type="reset" class="btn-reset">Clear Form</button>
+                    </div>
+
+                    <!-- Message Display -->
+                    <div id="message" class="message"></div>
+
+                    <!-- Already Have Account -->
+                    <div class="login-link">
+                        <p>Already have an account? <a href="login.html">Sign in here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form submission handler
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validation
+            const empId = document.getElementById('empId').value.trim();
+            const empName = document.getElementById('empName').value.trim();
+            const empEmail = document.getElementById('empEmail').value.trim();
+            const checkInTime = document.getElementById('checkInTime').value;
+
+            if (!empId || !empName || !empEmail || !checkInTime) {
+                showMessage('Please fill in all required fields', 'error');
+                return;
+            }
+
+            // Validate email domain
+            if (!empEmail.endsWith('@avandeus.com')) {
+                showMessage('✗ Invalid email domain. Please use your @avandeus.com company email address.', 'error');
+                return;
+            }
+
+            // Prepare data
+            const registrationData = {
+                empId: empId,
+                empName: empName,
+                checkInTime: checkInTime
+            };
+
+            // Submit to backend
+            fetch('/attendances', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(registrationData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Registration failed. Please try again.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                showMessage(`✓ Success! Account created for ${data.empName}. Redirecting to dashboard...`, 'success');
+                
+                // Store user session
+                const user = {
+                    id: data.id,
+                    empId: data.empId,
+                    empName: data.empName
+                };
+                localStorage.setItem('user', JSON.stringify(user));
+
+                // Redirect after delay
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2500);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage(`✗ Error: ${error.message}`, 'error');
+            });
+        });
+
+        // Message display function
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+            messageDiv.style.display = 'block';
+            
+            // Auto-hide error messages after 5 seconds
+            if (type === 'error') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Set current date-time for check-in field
+        window.addEventListener('load', function() {
+            const now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('checkInTime').value = now.toISOString().slice(0, 16);
+        });
+
+        // Real-time email validation
+        document.getElementById('empEmail').addEventListener('blur', function() {
+            const email = this.value.trim();
+            if (email && !email.endsWith('@avandeus.com')) {
+                this.style.borderColor = '#dc3545';
+            } else if (email) {
+                this.style.borderColor = '#28a745';
+            } else {
+                this.style.borderColor = '#e0e0e0';
+            }
+        });
+
+        document.getElementById('empEmail').addEventListener('input', function() {
+            const email = this.value.trim();
+            if (email && !email.endsWith('@avandeus.com')) {
+                this.style.borderColor = '#dc3545';
+            } else if (email) {
+                this.style.borderColor = '#28a745';
+            } else {
+                this.style.borderColor = '#e0e0e0';
+            }
+        });
+    </script>
+</body>
+</html>
