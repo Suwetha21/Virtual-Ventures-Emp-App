@@ -63,11 +63,11 @@ body {
 }
 
 .navbar-logo {
-    height: 45px;
+    height: 50px;
     width: auto;
-    max-width: 200px;
+    max-width: 250px;
     object-fit: contain;
-    object-position: left;
+    object-position: center;
     display: block;
 }
 
@@ -675,8 +675,8 @@ footer {
     }
 
     .navbar-logo {
-        height: 40px;
-        max-width: 180px;
+        height: 45px;
+        max-width: 200px;
     }
 
     .navbar-brand {
@@ -753,8 +753,8 @@ footer {
     }
 
     .navbar-logo {
-        height: 35px;
-        max-width: 160px;
+        height: 40px;
+        max-width: 180px;
     }
 
     .navbar-brand {
