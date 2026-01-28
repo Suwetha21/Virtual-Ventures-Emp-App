@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avandeus - Employee Portal Dashboard</title>
+    <title>Virtual Ventures - Employee Portal Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,7 +11,8 @@
     <nav class="navbar">
         <div class="container">
             <div class="navbar-brand">
-                <img src="logo.png" alt="Avandeus" class="navbar-logo" height="300px" width="200px">
+                <img src="logo.png" alt="Virtual Ventures" class="navbar-logo" height="300px" width="200px">
+                <h1>Virtual Ventures</h1>
             </div>
             <ul class="nav-links">
                 <li><a href="#dashboard" class="nav-tab active" onclick="switchTab('dashboard')">Dashboard</a></li>
@@ -20,8 +21,16 @@
                 <li><a href="#stats" class="nav-tab" onclick="switchTab('stats')">Statistics</a></li>
                 <li><a href="2index.html" class="nav-tab">Alternative View</a></li>
                 <li><a href="attendance.html" class="nav-tab">Attendance Page</a></li>
-                <li><a href="login.html" class="nav-tab" onclick="logout()">Logout</a></li>
             </ul>
+            <div class="user-profile-dropdown">
+                <button class="user-btn" onclick="toggleUserMenu()">👤 <span id="userName">User</span> ▼</button>
+                <div id="userMenu" class="user-menu">
+                    <a href="#" onclick="showProfile()">👤 My Profile</a>
+                    <a href="#" onclick="showSettings()">⚙️ Settings</a>
+                    <hr style="margin: 0.5rem 0;">
+                    <a href="login.html" onclick="logout()" class="logout-link">🚪 Logout</a>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -29,7 +38,7 @@
         <!-- Dashboard Section -->
         <section id="dashboard" class="tab-content active">
             <div class="hero">
-                <h2>Welcome to Avandeus</h2>
+                <h2>Welcome to Virtual Ventures</h2>
                 <p>Professional Employee Management & Attendance Tracking System</p>
             </div>
 
@@ -331,7 +340,40 @@
         window.addEventListener('load', () => {
             loadDashboardStats();
             document.getElementById('checkInTime').valueAsDate = new Date();
+            loadUserProfile();
         });
+
+        // Load and display user profile
+        function loadUserProfile() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.empName) {
+                document.getElementById('userName').textContent = user.empName;
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Toggle user menu dropdown
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('active');
+            document.addEventListener('click', function closeMenu(e) {
+                if (!e.target.closest('.user-profile-dropdown')) {
+                    userMenu.classList.remove('active');
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }
+
+        // Show profile (placeholder)
+        function showProfile() {
+            alert('Profile page will be implemented soon');
+        }
+
+        // Show settings (placeholder)
+        function showSettings() {
+            alert('Settings page will be implemented soon');
+        }
 
         function logout() {
             localStorage.removeItem('user');

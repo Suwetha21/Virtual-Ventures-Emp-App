@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avandeus - Dashboard</title>
+    <title>Virtual Ventures - Dashboard</title>
     <link rel="stylesheet" href="2index.css">
 </head>
 <body>
@@ -12,7 +12,16 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
-                    <img src="logo.png" alt="Avandeus Logo" style="height: 90px; width:90px; max-width: 150px; object-fit: contain;">
+                    <img src="logo.png" alt="Virtual Ventures Logo" style="height: 90px; width:90px; max-width: 150px; object-fit: contain;">
+                </div>
+                <div class="user-profile-dropdown" style="position: absolute; top: 1.5rem; right: 1.5rem;">
+                    <button class="user-btn-small" onclick="toggleUserMenu()">👤 ▼</button>
+                    <div id="userMenu" class="user-menu">
+                        <a href="#" onclick="showProfile()">👤 My Profile</a>
+                        <a href="#" onclick="showSettings()">⚙️ Settings</a>
+                        <hr style="margin: 0.5rem 0;">
+                        <a href="login.html" onclick="logout()" class="logout-link">🚪 Logout</a>
+                    </div>
                 </div>
                 <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
             </div>
@@ -178,12 +187,39 @@
             window.location.href = 'login.html';
         }
 
+        // Toggle user menu dropdown
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('active');
+            document.addEventListener('click', function closeMenu(e) {
+                if (!e.target.closest('.user-profile-dropdown')) {
+                    userMenu.classList.remove('active');
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }
+
+        // Show profile (placeholder)
+        function showProfile() {
+            alert('Profile page will be implemented soon');
+        }
+
+        // Show settings (placeholder)
+        function showSettings() {
+            alert('Settings page will be implemented soon');
+        }
+
         // Load user name
         window.addEventListener('load', () => {
             const user = localStorage.getItem('user');
             if (user) {
                 const userData = JSON.parse(user);
-                document.getElementById('userName').textContent = userData.username || 'User';
+                const userName = document.getElementById('userName');
+                if (userName) {
+                    userName.textContent = userData.empName || userData.username || 'User';
+                }
+            } else {
+                window.location.href = 'login.html';
             }
             loadDashboard();
         });

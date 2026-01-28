@@ -2,6 +2,7 @@ package com.avandeus.employee_portal;
 
 import jakarta.persistence.*;
 
+// Virtual Ventures Attendance Entity
 @Entity
 public class Attendance {
     @Id

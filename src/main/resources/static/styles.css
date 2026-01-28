@@ -47,9 +47,19 @@ body {
 .navbar-brand {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
     padding-right: 1.5rem;
     border-right: 2px solid rgba(255,255,255,0.2);
+}
+
+.navbar-brand h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .navbar-logo {
@@ -67,6 +77,97 @@ body {
     gap: 2rem;
     flex-wrap: wrap;
 }
+
+/* User Profile Dropdown */
+.user-profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-btn, .user-btn-small {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.user-btn-small {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+.user-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    min-width: 200px;
+    margin-top: 0.5rem;
+    animation: slideDown 0.3s ease-out;
+}
+
+.user-menu.active {
+    display: block;
+}
+
+.user-menu a {
+    display: block;
+    padding: 0.75rem 1.2rem;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.user-menu a:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.user-menu a:hover {
+    background: #f5f5f5;
+    color: #667eea;
+    padding-left: 1.5rem;
+}
+
+.user-menu a.logout-link {
+    color: #dc3545;
+}
+
+.user-menu a.logout-link:hover {
+    background: #ffe5e5;
+    color: #c82333;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 .nav-tab {
     color: white;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avandeus - Employee Portal Login</title>
+    <title>Virtual Ventures - Employee Portal Login</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         .login-container {
@@ -40,20 +40,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
         .company-logo {
             width: 140px;
             height: 140px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             object-fit: contain;
             display: block;
         }
         .logo-section h1 {
             color: #667eea;
             font-size: 2.2rem;
-            margin: 1rem 0 0.25rem 0;
+            margin: 0.5rem 0 0.25rem 0;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
         .tagline {
             color: #999;
@@ -166,8 +169,8 @@
     <div class="login-container">
         <div class="login-box">
             <div class="logo-section">
-                <img src="logo.png" alt="Avandeus Logo" class="company-logo">
-                
+                <img src="logo.png" alt="Virtual Ventures Logo" class="company-logo">
+                <h1>Virtual Ventures</h1>
                 <p class="tagline">Employee Management Portal</p>
             </div>
             <div id="errorMessage" class="error-message"></div>
@@ -187,11 +190,11 @@
                 <button type="submit" class="login-btn">🔓 Sign In</button>
             </form>
             <div class="signup-link">
-                <p>New to Avandeus? <a href="registration.html">Create an account</a></p>
+                <p>New to Virtual Ventures? <a href="registration.html">Create an account</a></p>
                 <p><a href="#">Forgot your password?</a></p>
             </div>
             <div class="footer-text">
-                <p>&copy; 2026 Avandeus Corporation. All rights reserved.</p>
+                <p>&copy; 2026 Virtual Ventures Corporation. All rights reserved.</p>
             </div>
         </div>
     </div>
