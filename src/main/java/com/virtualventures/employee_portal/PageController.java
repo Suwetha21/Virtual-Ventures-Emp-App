@@ -1,4 +1,4 @@
-package com.avandeus.employee_portal;
+package com.virtualventures.employee_portal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

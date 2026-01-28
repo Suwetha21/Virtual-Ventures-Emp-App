@@ -1,4 +1,4 @@
-package com.avandeus.employee_portal;
+package com.virtualventures.employee_portal;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
