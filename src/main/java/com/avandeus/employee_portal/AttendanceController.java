@@ -31,10 +31,10 @@ public class AttendanceController {
 			throw new IllegalArgumentException("Attendance cannot be null");
 		}
 		
-		// Validate email domain - only @avandeus.com allowed
+		// Validate email domain - only @virtualventures.com allowed
 		String email = attendance.getEmpEmail();
-		if (email == null || !email.endsWith("@avandeus.com")) {
-			throw new IllegalArgumentException("Only @avandeus.com email addresses are allowed for registration");
+		if (email == null || !email.endsWith("@virtualventures.com")) {
+			throw new IllegalArgumentException("Only @virtualventures.com email addresses are allowed for registration");
 		}
 		
 		return attendanceRepository.save(attendance);
