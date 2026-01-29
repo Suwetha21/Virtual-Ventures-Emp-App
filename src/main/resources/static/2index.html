@@ -223,6 +223,33 @@
             }
             loadDashboard();
         });
+        async function registerAttendance() {
+    // 1. Gather data from your input fields
+    const attendanceData = {
+        empName: document.getElementById('empName').value,
+        empEmail: document.getElementById('empEmail').value, // Must end with @virtualventures.com
+        checkInTime: new Date().toISOString()
+    };
+
+    // 2. Send the data to your Java backend
+    try {
+        const response = await fetch('/attendances', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(attendanceData)
+        });
+
+        if (response.ok) {
+            alert("Attendance Registered Successfully!");
+            window.location.href = "home.html"; // Redirect to dashboard
+        } else {
+            const error = await response.json();
+            alert("Error: " + error.message);
+        }
+    } catch (err) {
+        console.error("Connection failed", err);
+    }
+}
     </script>
 </body>
 </html>
