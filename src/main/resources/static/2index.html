@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Ventures - Dashboard</title>
+    <link rel="stylesheet" href="2index.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1;">
+                    <img src="logo.svg" alt="Virtual Ventures Logo" style="height: 90px; width:auto; max-width: 150px; object-fit: contain;">
+                </div>
+                <div class="user-profile-dropdown" style="position: absolute; top: 1.5rem; right: 1.5rem;">
+                    <button class="user-btn-small" onclick="toggleUserMenu()">👤 ▼</button>
+                    <div id="userMenu" class="user-menu">
+                        <a href="#" onclick="showProfile()">👤 My Profile</a>
+                        <a href="#" onclick="showSettings()">⚙️ Settings</a>
+                        <hr style="margin: 0.5rem 0;">
+                        <a href="login.html" onclick="logout()" class="logout-link">🚪 Logout</a>
+                    </div>
+                </div>
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="2index.html" class="nav-item active">
+                    <span class="icon">📊</span>
+                    <span class="label">Dashboard</span>
+                </a>
+                <a href="attendance.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span class="label">Attendance</span>
+                </a>
+                <a href="index.html" class="nav-item">
+                    <span class="icon">📝</span>
+                    <span class="label">Register</span>
+                </a>
+                <a href="#stats" class="nav-item" onclick="loadStats()">
+                    <span class="icon">📈</span>
+                    <span class="label">Statistics</span>
+                </a>
+                <a href="login.html" class="nav-item" onclick="logout()">
+                    <span class="icon">🚪</span>
+                    <span class="label">Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <h1>Dashboard</h1>
+                <div class="header-actions">
+                    <input type="search" placeholder="Search..." class="search-box">
+                    <div class="user-profile">
+                        <span id="userName">User</span>
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23667eea'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3C/svg%3E" alt="Profile">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Overview Cards -->
+                <section class="overview">
+                    <h2>Overview</h2>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-icon employees">👥</div>
+                            <div class="card-content">
+                                <h3>Total Employees</h3>
+                                <p class="card-number" id="totalEmps">0</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon present">✓</div>
+                            <div class="card-content">
+                                <h3>Present Today</h3>
+                                <p class="card-number" id="presentToday">0</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon attendance">📊</div>
+                            <div class="card-content">
+                                <h3>Attendance Rate</h3>
+                                <p class="card-number" id="attendRate">0%</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon records">📋</div>
+                            <div class="card-content">
+                                <h3>Total Records</h3>
+                                <p class="card-number" id="totalRecords">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="recent-activity">
+                    <div class="section-header">
+                        <h2>Recent Check-ins</h2>
+                        <a href="attendance.html" class="view-all">View All →</a>
+                    </div>
+                    <div class="activity-list" id="activityList">
+                        <p class="loading">Loading...</p>
+                    </div>
+                </section>
+
+                <!-- Employee Stats -->
+                <section class="employee-stats">
+                    <h2>Employee Statistics</h2>
+                    <div class="stats-container" id="statsContainer">
+                        <p class="loading">Loading statistics...</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        function loadDashboard() {
+            fetch('/attendances')
+                .then(response => response.json())
+                .then(data => {
+                    const uniqueEmps = new Set(data.map(r => r.empId)).size;
+                    const today = new Date().toDateString();
+                    const todayCount = data.filter(r => new Date(r.checkInTime).toDateString() === today).length;
+                    
+                    document.getElementById('totalEmps').textContent = uniqueEmps;
+                    document.getElementById('presentToday').textContent = todayCount;
+                    document.getElementById('attendRate').textContent = uniqueEmps > 0 ? Math.round((todayCount / uniqueEmps) * 100) + '%' : '0%';
+                    document.getElementById('totalRecords').textContent = data.length;
+
+                    // Recent activity
+                    const recent = data.slice(-5).reverse();
+                    const activityHtml = recent.map(r => `
+                        <div class="activity-item">
+                            <div class="activity-icon">✓</div>
+                            <div class="activity-content">
+                                <p class="activity-title">${r.empName} (${r.empId})</p>
+                                <p class="activity-time">${new Date(r.checkInTime).toLocaleString()}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                    document.getElementById('activityList').innerHTML = activityHtml || '<p>No recent activity</p>';
+
+                    // Employee stats
+                    const empMap = {};
+                    data.forEach(record => {
+                        if (!empMap[record.empId]) {
+                            empMap[record.empId] = { name: record.empName, count: 0 };
+                        }
+                        empMap[record.empId].count++;
+                    });
+
+                    const statsHtml = Object.entries(empMap).map(([id, emp]) => `
+                        <div class="stat-item">
+                            <div class="stat-header">
+                                <span class="stat-name">${emp.name}</span>
+                                <span class="stat-badge">${emp.count}</span>
+                            </div>
+                            <div class="stat-bar">
+                                <div class="stat-fill" style="width: ${Math.min((emp.count / Math.max(...Object.values(empMap).map(e => e.count))) * 100, 100)}%"></div>
+                            </div>
+                        </div>
+                    `).join('');
+                    document.getElementById('statsContainer').innerHTML = statsHtml || '<p>No data</p>';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function loadStats() {
+            loadDashboard();
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Toggle user menu dropdown
+        function toggleUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            userMenu.classList.toggle('active');
+            document.addEventListener('click', function closeMenu(e) {
+                if (!e.target.closest('.user-profile-dropdown')) {
+                    userMenu.classList.remove('active');
+                    document.removeEventListener('click', closeMenu);
+                }
+            });
+        }
+
+        // Show profile (placeholder)
+        function showProfile() {
+            alert('Profile page will be implemented soon');
+        }
+
+        // Show settings (placeholder)
+        function showSettings() {
+            alert('Settings page will be implemented soon');
+        }
+
+        // Load user name
+        window.addEventListener('load', () => {
+            const user = localStorage.getItem('user');
+            if (user) {
+                const userData = JSON.parse(user);
+                const userName = document.getElementById('userName');
+                if (userName) {
+                    userName.textContent = userData.empName || userData.username || 'User';
+                }
+            } else {
+                window.location.href = 'login.html';
+            }
+            loadDashboard();
+        });
+        async function registerAttendance() {
+    // 1. Gather data from your input fields
+    const attendanceData = {
+        empName: document.getElementById('empName').value,
+        empEmail: document.getElementById('empEmail').value, // Must end with @virtualventures.com
+        checkInTime: new Date().toISOString()
+    };
+
+    // 2. Send the data to your Java backend
+    try {
+        const response = await fetch('/attendances', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(attendanceData)
+        });
+
+        if (response.ok) {
+            alert("Attendance Registered Successfully!");
+            window.location.href = "home.html"; // Redirect to dashboard
+        } else {
+            const error = await response.json();
+            alert("Error: " + error.message);
+        }
+    } catch (err) {
+        console.error("Connection failed", err);
+    }
+}
+    </script>
+</body>
+</html>
